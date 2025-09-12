@@ -1,0 +1,224 @@
+delta=alpha
+b=b
+a=gamma
+c=omega
+
+CVME
+library(numDeriv)
+library(Matrix)
+options(warn=0)
+options(error=NULL)
+alpha=1.0
+b=1.8
+gamma=0.5
+ omega=1.8
+
+
+
+EHL_Harris_W_cdf<-function(alpha,b,gamma,omega,x){
+ 1-((1-(1-(((1+x^omega)^(-1))/(1+(1-(1+x^omega)^(-1))))^(2*gamma))^b)/(1-(1-alpha)*(1-(((1+x^omega)^(-1))/(1+(1-(1+x^omega)^(-1))))^(2*gamma))^b))^alpha
+
+
+}
+
+
+quantile<-function(alpha,b,gamma,omega,u){
+  f=function(x){
+    EHL_Harris_W_cdf(alpha,b,gamma,omega,x)-u
+  }
+  rc<-uniroot(f,lower=0,upper=10000,tol=1e-9)
+  result=rc$root
+  return(result)
+  
+}
+
+MPS <- function(par, x){
+ alpha=par[1]
+  b=par[2]
+  gamma=par[3]
+  omega=par[4]
+  n <- length(x)
+  c <- numeric(n - 1)
+  d <- numeric(n - 1)
+  for (i in 2:n){
+    c[i - 1] <- EHL_Harris_W_cdf(x[i],alpha,b,gamma,omega)
+    d[i - 1] <- EHL_Harris_W_cdf(x[i-1],alpha,b,gamma,omega)
+  }
+  s <- (1/(n + 1))*sum(log(c - d))
+  return(-s)
+}
+
+ADE <- function(par, x){
+  alpha=par[1]
+  b=par[2]
+ gamma=par[3]
+  omega=par[4]
+  n <- length(x)
+  c <- numeric(n)
+  d <- numeric(n)
+  for (i in 1:n){
+    c[i] <- (2*i-1)*log(EHL_Harris_W_cdf(x[i],alpha,b,gamma,omega))
+    d[i] <- (2*i-1)*log(1-EHL_Harris_W_cdf(x[n+1-i],alpha,b,gamma,omega))
+  }
+  s <- -n-(1/n)*sum(c + d)
+  return(s)
+}
+
+RADE <- function(par, x){
+  alpha=par[1]
+  b=par[2]
+  gamma=par[3]
+  omega=par[4]
+  n <- length(x)
+  c <- numeric(n)
+  d <- numeric(n)
+  for (i in 1:n){
+    c[i] <- EHL_Harris_W_cdf(x[i],alpha,b,gamma,omega)
+    d[i] <- (2*i-1)*log(1-EHL_Harris_W_cdf(x[n+1-i],alpha,b,gamma,omega))
+  }
+  s <- (n/2)-2*sum(c)-sum(d)/n
+  return(s)
+}
+
+CVME <- function(par, x){
+  alpha=par[1]
+  b=par[2]
+  gamma=par[3]
+  omega=par[4]
+  n <- length(x)
+  c <- numeric(n)
+  for (i in 1:n){
+    c[i] <- (EHL_Harris_W_cdf(x[i],alpha,b,gamma,omega)-(2*i-1)/(2*n))**2
+  }
+  s <- 1/(12*n)+sum(c)
+  return(s)
+}
+
+LS <- function(par, x){
+  alpha=par[1]
+  b=par[2]
+  gamma=par[3]
+  omega=par[4]
+  n <- length(x)
+  c <- numeric(n)
+  for (i in 1:n){
+    c[i] <- (EHL_Harris_W_cdf(x[i],alpha,b,gamma,omega)-i/(n+1))**2
+  }
+  s <- sum(c)
+  return(s)
+}
+
+WLS <- function(par, x){
+  alpha=par[1]
+  b=par[2]
+  gamma=par[3]
+ omega=par[4]
+  n <- length(x)
+  c <- numeric(n)
+  for (i in 1:n){
+    c[i] <- ((EHL_Harris_W_cdf(x[i],alpha,b,gamma,omega)-i/(n+1))**2)/(i*(n-i+1))
+  }
+  s <- (n+2)*((n+1)^2)*sum(c)
+  return(s)
+}
+
+ n1=c(25,50,100,200,400,800,1600)
+  #25,50,100,200,400,800
+  # If you want to check one sample at a time then use n1<-c(sample size)
+  
+  for (j in 1:length(n1)){
+    n=n1[j]
+    N=1000
+    par_alpha<-c(rep(0,N))
+    par_b<-c(rep(0,N))
+    par_gamma<-c(rep(0,N))
+    par_omega<-c(rep(0,N))
+    # 
+    # LC_lambda<-c(rep(0,N))
+    # UC_lambda<-c(rep(0,N))
+    # LC_beta<-c(rep(0,N))
+    # UC_beta<-c(rep(0,N))
+    # LC_delta<-c(rep(0,N))
+    # UC_delta<-c(rep(0,N))
+    # LC_theta<-c(rep(0,N))
+    # UC_theta<-c(rep(0,N))
+    # 
+    # count_lambda=0
+    # count_beta=0
+    # count_delta=0
+    # count_theta=0
+    
+    for (i in 1:N)
+    {
+      print(i)
+      #flush.console()
+      repeat{
+        x<-c(rep(0,n))
+        
+        #Generate a random variable from uniform distribution
+        u<-0
+        u<-runif(n,min=0,max=1)
+        
+        for (k in 1:n){
+          x[k]<-quantile(alpha,b,gamma,omega,u[k])
+        }
+        x<-sort(x)
+        #Maximum likelihood estimation
+        err<-try(
+          {
+            par.result<-nlminb(c(alpha,b,gamma,omega),x=x,CVME ,lower=0.01,upper=Inf)
+          }
+        )
+        
+        if(class(err)!="warnings"){
+          temp=par.result$convergence
+          if(temp==0){
+            par_alpha[i]<-par.result$par[1]
+            par_b[i]<-par.result$par[2]
+            par_gamma[i]<-par.result$par[3]
+            par_omega[i]<-par.result$par[4]
+            break
+          }
+        }
+      }
+    }
+    
+    #Calculate Average
+    mean_alpha<-mean(par_alpha)
+    mean_b<-mean(par_b)
+    mean_gamma<-mean(par_gamma)
+    mean_omega<-mean(par_omega)
+    
+    print(cbind(mean_alpha,mean_b,mean_gamma,mean_omega))
+    
+    #Calculate Average Bias
+    Bias_alpha<-sum(par_alpha-alpha)/N
+    Bias_b<-sum(par_b-b)/N
+    Bias_gamma<-sum(par_gamma-gamma)/N
+    Bias_omega<-sum(par_omega-omega)/N
+    
+    print(cbind(Bias_alpha,Bias_b,Bias_gamma,Bias_omega))
+    
+    #Calculate RMSE
+    RMSE_alpha<-sqrt(sum((alpha-par_alpha)^2)/N)
+    RMSE_b<-sqrt(sum((b-par_b)^2)/N)
+    RMSE_gamma<-sqrt(sum((gamma-par_gamma)^2)/N)
+    RMSE_omega<-sqrt(sum((omega-par_omega)^2)/N)
+    print(cbind(RMSE_alpha,RMSE_b,RMSE_gamma,RMSE_omega))
+    
+    # #Converge Probability
+    # CP_lambda<-count_lambda/N
+    # CP_beta<-count_beta/N
+    # CP_delta<-count_delta/N
+    # CP_theta<-count_theta/N
+    # print(cbind(CP_lambda,CP_beta,CP_delta,CP_theta))
+    # 
+    # #Average Width
+    # AW_lambda<-sum(abs(UC_lambda-LC_lambda))/N
+    # AW_beta<-sum(abs(UC_beta-LC_beta))/N
+    # AW_delta<-sum(abs(UC_delta-LC_delta))/N
+    # AW_theta<-sum(abs(UC_theta-LC_theta))/N
+    # print(cbind(AW_lambda,AW_beta,AW_delta,AW_theta))
+  }
+  
+#}  

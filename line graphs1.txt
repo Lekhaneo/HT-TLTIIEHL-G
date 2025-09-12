@@ -1,0 +1,55 @@
+library("readxl")
+read_excel("C:\\Users\\Jacqueline\\Downloads\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_20_05_24\\delta1.xlsx")
+RMSE=read_excel("C:\\Users\\Jacqueline\\Downloads\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_20_05_24\\delta1.xlsx")
+RMSE
+
+matplot(RMSE, type = "o", pch = 1, col = c("red", "blue", "green", "purple",  "pink", "black"),
+        xaxt = "n", xlab = "Sample Size", ylab = "RMSE(delta)")
+
+axis(1, at = 1:6, labels = c("25","50", "100", "200", "400", "800"))
+
+legend("topright", cex = 2.0, c("MLE","CVME", "RADE", "RADE", "OLS", "WLS"),
+       col = c("red", "blue", "green", "purple",  "pink", "black"), pch =1,lty=c(1,1,1,1,1,1),lwd=c(1,1,1,1,1,1))
+
+
+library("readxl")
+read_excel("C:\\Users\\Jacqueline\\Downloads\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_20_05_24\\Upsilon1.xlsx")
+RMSE=read_excel("C:\\Users\\Jacqueline\\Downloads\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_20_05_24\\Upsilon1.xlsx")
+RMSE
+
+matplot(RMSE, type = "o", pch = 1, col = c("red", "blue", "green", "purple",  "pink", "black"),
+        xaxt = "n", xlab = "Sample Size", ylab = "RMSE(Upsilon)")
+
+axis(1, at = 1:6, labels = c("25","50", "100", "200", "400", "800"))
+
+legend("topright", cex = 2.0, c("MLE","CVME", "RADE", "RADE", "OLS", "WLS"),
+        col = c("red", "blue", "green", "purple",  "pink", "black"), pch =1,lty=c(1,1,1,1,1,1),lwd=c(1,1,1,1,1,1))
+
+
+library("readxl")
+read_excel("C:\\Users\\Jacqueline\\Downloads\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_20_05_24\\c1.xlsx")
+RMSE=read_excel("C:\\Users\\Jacqueline\\Downloads\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_20_05_24\\c1.xlsx")
+RMSE
+
+matplot(RMSE, type = "o", pch = 1, col = c("red", "blue", "green", "purple",  "pink", "black"),
+        xaxt = "n", xlab = "Sample Size", ylab = "RMSE(c)")
+
+axis(1, at = 1:6, labels = c("25","50", "100", "200", "400", "800"))
+
+legend("topright", cex = 2.0, c("MLE","CVME", "RADE", "RADE", "OLS", "WLS"),
+      col = c("red", "blue", "green", "purple",  "pink", "black"), pch =1,lty=c(1,1,1,1,1,1),lwd=c(1,1,1,1,1,1))
+
+library("readxl")
+read_excel("C:\\Users\\Jacqueline\\Downloads\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_20_05_24\\Omega1.xlsx")
+RMSE=read_excel("C:\\Users\\Jacqueline\\Downloads\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_05_06_24\\HT-TLTIIEHL-G_20_05_24\\Omega1.xlsx")
+RMSE
+
+matplot(RMSE, type = "o", pch = 1, col = c("red", "blue", "green", "purple",  "pink", "black"),
+        xaxt = "n", xlab = "Sample Size", ylab = "RMSE(Omega)")
+
+axis(1, at = 1:6, labels = c("25","50", "100", "200", "400", "800"))
+
+legend("topright", cex = 2.0, c("MLE","CVME", "RADE", "RADE", "OLS", "WLS"),
+       col = c("red", "blue", "green", "purple",  "pink", "black"), pch =1,lty=c(1,1,1,1,1,1),lwd=c(1,1,1,1,1,1))
+
+

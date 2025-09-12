@@ -1,0 +1,144 @@
+APW
+set.seed(100)
+TIHTW
+
+##CDF 
+DHTLL<- function(x,theta)
+{
+  alpha= theta[1]
+  beta=theta[2]
+  lambda=theta[3]
+
+  result = (1/(1-alpha))*(1-alpha^(1-exp(-lambda*x^beta)))
+ 
+
+
+  return(result)  
+}
+##PDF
+HTLL<- function(x,theta)
+{
+     alpha= theta[1]
+  beta=theta[2]
+  lambda=theta[3]
+ 
+
+  result=   (log(alpha)/(alpha-1))*beta*lambda*(x^(beta-1))*exp(-lambda*x^beta)*alpha^(1-exp(-lambda*x^beta))
+
+  return(result) 
+}
+## quantile GE
+QHTLL= function(p,theta)
+{
+   alpha= theta[1]
+  beta=theta[2]
+  lambda=theta[3]
+  result=(-log(1-(log(1-p*(1-alpha))/log(alpha)))/lambda)^(1/beta)
+
+  return(result)
+}
+#########################################################################
+#######################1 - Method of maximum likelihood##################
+#########################################################################
+k=c(100) #samples size
+th1 = th2 = th3 = matrix(0,nrow=length(k),ncol=3)
+N      = 1000#number of iterations
+Parr   = Bias = MSEE = MREE = matrix(0,3,N)
+likelihood1 = function(para,x,pdf0,b)
+{
+  -sum(log(pdf0(x,para)))
+}
+
+MLE1   =  function(pdf0,theta0,data,lim_inf,lim_sup)
+{
+  max = nlminb(start = theta0,objective=likelihood1,x=data,
+               pdf0=pdf0,lower = lim_inf, upper = lim_sup,
+               control = list(iter.max=500,rel.tol=1e-6))
+  return(max$par)
+}
+
+lower    = c(0.45,0.1,.7)
+upper    = c( +Inf,+Inf,+Inf)
+
+for(d in 1:length(k)){
+  for(i in 1:N){
+    theta     = c(2.0,.7,9.3) #intial values
+    data      = QHTLL(runif(k[d]),theta)
+    starts    = theta
+    mm        = suppressWarnings(MLE1(pdf0=HTLL,theta0=starts,
+                                      data=data,lim_inf=lower,lim_sup=upper))
+    
+    Parr[,i]  = c(mm)
+    # cat("N = ...........(",i,")","\n")
+  }
+  
+  m1=round(apply(Parr,1,mean), digits = 5) # hat
+
+  th1[d,c(1,2,3)]=m1
+  
+  cat("n = .....................................(",k[d],")","\n")
+}
+th1
+############determine quantile############
+p=c(0.7,0.75,0.8,0.85,0.9,0.95)
+Q= matrix(0,1,N)
+Q1final=matrix(0,1,length(p))
+vart= matrix(0,1,N)
+vartfinal1=matrix(0,1,length(p))
+tv= matrix(0,1,N)
+tvfinal1=matrix(0,1,length(p))
+tvp= matrix(0,1,N)
+tvpfinal1=matrix(0,1,length(p))
+
+for(d in 1:length(p)){
+  for(i in 1:N){
+    alpha= Parr[1,i]
+    beta=Parr[2,i]
+    lambda=Parr[3,i]
+  
+    result=(-log(1-(log(1-p[d]*(1-alpha))/log(alpha)))/lambda)^(1/beta)
+
+    Q[,i]=result
+    integrand = function(x){
+     
+      result=x*  (log(alpha)/(alpha-1))*beta*lambda*(x^(beta-1))*exp(-lambda*x^beta)*alpha^(1-exp(-lambda*x^beta))
+
+      return(result)
+    }
+    vart[,i]=1/(1-p[d])*integrate(integrand,lower=Q[i],upper=1000)$value
+    integrand2 = function(x){
+     
+      result=x^2*  (log(alpha)/(alpha-1))*beta*lambda*(x^(beta-1))*exp(-lambda*x^beta)*alpha^(1-exp(-lambda*x^beta))
+
+      return(result)
+    }
+    tv[,i]=((1/(1-p[d]))*integrate(integrand2,lower=Q[i],upper=+Inf)$value)-(vart[i])^2
+    tvp[,i]=vart[i]+ p[d]*tv[i]
+    integrand3 = function(x){
+     
+      result=(-log(1-(log(1-x*(1-alpha))/log(alpha)))/lambda)^(1/beta)
+
+      return(result)
+    }
+
+    
+    #cat("N = ...........(",i,")","\n")
+  }
+  m1=round(apply(Q,1,mean), digits = 5)  
+  Q1final[,d]=m1  
+  
+  m2=round(apply(vart,1,mean), digits = 5)  
+  vartfinal1[,d]=m2 
+  
+  m3=round(apply(tv,1,mean), digits = 5)  
+  tvfinal1[,d]=m3 
+  
+  m4=round(apply(tvp,1,mean), digits = 5)  
+  tvpfinal1[,d]=m4 
+  
+  cat("n = .....................................(",p[d],")","\n")  
+}  
+Q1final
+vartfinal1
+tvfinal1
+tvpfinal1

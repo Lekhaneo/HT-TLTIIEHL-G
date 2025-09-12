@@ -1,0 +1,337 @@
+4
+######################
+###### 
+rm(list=ls())
+library(stats4)
+library(bbmle)
+library(stats)
+library(numDeriv)
+library('bbmle')
+x<-c(3.71, 4.23, 4.16, 2.98, 3.23, 4.67, 3.99, 5.04, 4.55, 3.24, 2.80, 3.44, 3.27, 2.66,
+2.95, 4.70,
+5.12, 3.77, 3.12, 2.38, 4.57, 3.88, 2.97, 3.70, 2.53, 2.67, 4.12, 4.80, 3.55, 3.86, 2.51, 3.33,
+3.85, 2.35, 3.12, 4.39, 5.09, 3.38, 2.73,  3.07
+)
+
+
+
+
+
+
+LloG
+
+
+
+main_LL<- function(delta,b,a,c) {
+  -sum(log(4*a*b*(delta^2)*(c*(x^(c-1))*((1+x^c)^(-2)))*((1+(1-(1+x^c)^(-1)))^(-(2*(a+1)-1)))*(((1+x^c)^(-1))^(2*a-1))*((1-(((1+x^c)^(-1))/(1+(1-(1+x^c)^(-1))))^(2*a))^(b-1))*((1-(1-(((1+x^c)^(-1))/(1+(1-(1+x^c)^(-1))))^(2*a))^b)^(delta-1))*((1-(1-delta)*(1-(((1+x^c)^(-1))/(1+(1-(1+x^c)^(-1))))^(2*a))^b)^(-(delta+1)))
+
+))
+}
+main.result<-mle2(main_LL,hessian = NULL,start=list(delta=10.91101,b=.192,a=1.90912,c=1.80009),optimizer="nlminb",lower=0)
+summary(main.result)
+
+TIHTOPGW
+
+main_LL<- function(theta,alpha, beta,lambda) {
+  -sum(log(alpha*beta*(theta^2)*(lambda*(x^(lambda-1))*exp(-x^lambda))*((exp(-x^lambda))^(-2))*(((1-exp(-x^lambda))/(exp(-x^lambda)))^(alpha-1))*((1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^(beta-1))*(exp(1-(1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^beta))*((exp(1-(1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^beta))^(theta-1))*(1-(1-theta)*(1-exp(1-(1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^beta)))^(-(theta+1))
+
+))
+}
+main.result<-mle2(main_LL,hessian = NULL,start=list(theta=.699960881,alpha=0.699890912,beta=0.0091,lambda=.39989),optimizer="nlminb",lower=0)
+summary(main.result)
+
+APExLLD
+m_LL<- function(alpha, a,b,c) {
+  -sum(log((a*c*log(alpha)*((x/b)^(-a-1))*((1+(x/b)^(-a))^(-c-1))*alpha^(1+(x/b)^(-a))^(-c))/(b*(alpha-1))
+
+
+))
+}
+m.result<-mle2(m_LL,hessian = NULL,start=list(alpha=89.90009912,a=.00091,b=.90000000000000000009,c=0.0139989),optimizer="nlminb",lower=0)
+summary(m.result)
+
+
+TL-OBII-LLoG
+ZBOBLLoG_LL<- function(alpha,beta,b,lambda) {
+  -sum(log(2*beta*alpha*b*((1-(1-(1+((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha))^(-beta))^2)^(b-1))*(1-(1+((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha))^(-beta))*((1+((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha))^(-beta-1))*(((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha-1))*(lambda*(x^(lambda-1))*(1+x^lambda)^(-2))*((1+x^lambda)^(-1))^(-2)  
+ ))
+}
+ZBOBLLoG.result<-mle2(ZBOBLLoG_LL,hessian = NULL,start=list(alpha= 1.99556 ,beta=0.003368 ,b= 0.179  ,lambda=0.00000332 ),optimizer="nlminb",lower=0)
+summary(ZBOBLLoG.result)
+
+
+ MOGBXII
+
+  MOGBXII_LL<- function(alpha, beta, delta,a) {
+  -sum(log( 
+alpha*beta*delta*a*(x^(alpha-1))*((1+x^alpha)^(-a*beta-1))*((1-(1-delta)*( (1+x^alpha)^(-(a*beta))))^(-2))
+ 
+
+))
+}
+   MOGBXII.result<-mle2(  MOGBXII_LL,hessian = NULL,start=list(alpha=180.2660881,beta=.699890912,delta=0.0091,a=1.39989),optimizer="nlminb",lower=0)
+summary(    MOGBXII.result)
+
+APTLW
+
+
+
+APTLW_LL<- function(theta,alpha, beta,lambda) {
+  -sum(log(((2*beta*theta*lambda*(log(alpha)))/(alpha-1))*((1-exp(-2*lambda*x^beta))^(theta-1))*(exp(-2*lambda*x^beta))*(alpha^((1-exp(-2*lambda*x^beta))^theta))*(x^(beta-1))
+))
+}
+
+APTLW.result<-mle2(APTLW_LL,hessian = NULL,start=list(theta=1.010090000000899,alpha=898.0000999890912,beta=.0800091,lambda=.00000000010000000989),optimizer="nlminb",lower=0)
+summary(APTLW.result)
+
+
+
+
+TIIGIE-Lx
+
+m_LL<- function(lambda,alpha,a,b) {
+  -sum(log(lambda*alpha*(a/b)*((1+(x/b))^(-(a+1)))*((1+(x/b))^(a*(alpha+1)))*exp(lambda*(1-(1+(x/b))^(a*alpha)))
+
+
+))
+}
+m.result<-mle2(m_LL,hessian = NULL,start=list(lambda=11.0098091,alpha=.910,a=.0001,b=0.09001),optimizer="nlminb",lower=0)
+summary(m.result)
+
+
+rm(list=ls())
+install.packages("stats4")
+install.packages("AdequacyModel")
+install.packages("bbmle")
+install.packages("stats")
+library(stats4)
+library(AdequacyModel)
+library(bbmle)
+library(stats)
+#######################################################################Keylar
+#######################################################################Keylar
+air<-c(3.71, 4.23, 4.16, 2.98, 3.23, 4.67, 3.99, 5.04, 4.55, 3.24, 2.80, 3.44, 3.27, 2.66,
+2.95, 4.70,
+5.12, 3.77, 3.12, 2.38, 4.57, 3.88, 2.97, 3.70, 2.53, 2.67, 4.12, 4.80, 3.55, 3.86, 2.51, 3.33,
+3.85, 2.35, 3.12, 4.39, 5.09, 3.38, 2.73,  3.07
+)
+
+
+
+
+
+#GELLLoG
+# define GELLLoG pdf
+
+GELLLoG_pdf<-function(parameter,x){
+    delta=parameter[1]
+  b=parameter[2]
+  a=parameter[3]
+  c=parameter[4]
+  4*a*b*(delta^2)*(c*(x^(c-1))*((1+x^c)^(-2)))*((1+(1-(1+x^c)^(-1)))^(-(2*(a+1)-1)))*(((1+x^c)^(-1))^(2*a-1))*((1-(((1+x^c)^(-1))/(1+(1-(1+x^c)^(-1))))^(2*a))^(b-1))*((1-(1-(((1+x^c)^(-1))/(1+(1-(1+x^c)^(-1))))^(2*a))^b)^(delta-1))*((1-(1-delta)*(1-(((1+x^c)^(-1))/(1+(1-(1+x^c)^(-1))))^(2*a))^b)^(-(delta+1)))
+
+
+
+}
+# define GELLLoG  cdf
+GELLLoG_cdf<-function(parameter,x){
+    delta=parameter[1]
+  b=parameter[2]
+  a=parameter[3]
+  c=parameter[4]
+1-((1-(1-(((1+x^c)^(-1))/(1+(1-(1+x^c)^(-1))))^(2*a))^b)/(1-(1-delta)*(1-(((1+x^c)^(-1))/(1+(1-(1+x^c)^(-1))))^(2*a))^b))^delta
+
+
+}
+goodness.fit(pdf=GELLLoG_pdf,cdf= GELLLoG_cdf,mle=c(23.7855798  , 10.8955738  ,       0.0415167  ,   6.8314261 ),data=air,method = "BFGS",domain = c(0,100),lim_inf = c(0,0,0,0),
+             lim_sup = c(100,100,100,100))
+
+
+
+TITHOPGW-G
+
+GELLLoG_pdf<-function(parameter,x){
+  theta=parameter[1]
+  alpha=parameter[2]
+  beta=parameter[3]
+  lambda=parameter[4]
+
+
+
+alpha*beta*(theta^2)*(lambda*(x^(lambda-1))*exp(-x^lambda))*((exp(-x^lambda))^(-2))*(((1-exp(-x^lambda))/(exp(-x^lambda)))^(alpha-1))*((1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^(beta-1))*(exp(1-(1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^beta))*((exp(1-(1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^beta))^(theta-1))*(1-(1-theta)*(1-exp(1-(1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^beta)))^(-(theta+1))
+
+
+
+}
+# define GELLLoG  cdf
+GELLLoG_cdf<-function(parameter,x){
+  theta=parameter[1]
+  alpha=parameter[2]
+  beta=parameter[3]
+  lambda=parameter[4]
+
+
+1-((exp(1-(1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^beta))/(1-(1-theta)*(1-exp(1-(1+((1-exp(-x^lambda))/(exp(-x^lambda)))^alpha)^beta))))^theta
+
+}
+goodness.fit(pdf=GELLLoG_pdf,cdf= GELLLoG_cdf,mle=c(   0.047168   ,    3.864511  ,    0.149065   ,  1.249083   ),data=air,method = "BFGS",domain = c(0,100),lim_inf = c(0,0,0,0),
+             lim_sup = c(100,100,100,100))
+
+###############################################################################
+
+
+APExLLD
+
+
+
+GELLLoG_pdf<-function(parameter,x){
+  
+     alpha=parameter[1]
+  a=parameter[2]
+ b=parameter[3]
+c=parameter[4]
+
+
+
+(a*c*log(alpha)*((x/b)^(-a-1))*((1+(x/b)^(-a))^(-c-1))*alpha^(1+(x/b)^(-a))^(-c))/(b*(alpha-1))
+
+
+}
+# define GELLLoG  cdf
+GELLLoG_cdf<-function(parameter,x){
+   alpha=parameter[1]
+  a=parameter[2]
+ b=parameter[3]
+c=parameter[4]
+
+
+(alpha^(1+(x/b)^(-a))^(-c)-1)/(alpha-1)
+
+}
+goodness.fit(pdf=GELLLoG_pdf,cdf= GELLLoG_cdf,mle=c( 6.41100    ,    5.63974  ,  1.23083  , 116.51772  ),data=air,method = "BFGS",domain = c(0,100),lim_inf = c(0,0,0,0),
+             lim_sup = c(100,100,100,100))
+
+
+
+###############################################################################
+
+
+
+
+
+TL-OBIII-LLoG
+
+GELLLoG_pdf<-function(parameter,x){
+  alpha=parameter[1]
+  beta=parameter[2]
+  b=parameter[3]
+  lambda=parameter[4]
+
+  2*beta*alpha*b*((1-(1-(1+((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha))^(-beta))^2)^(b-1))*(1-(1+((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha))^(-beta))*((1+((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha))^(-beta-1))*(((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha-1))*(lambda*(x^(lambda-1))*(1+x^lambda)^(-2))*((1+x^lambda)^(-1))^(-2)  
+ }
+# define GELLLoG  cdf
+GELLLoG_cdf<-function(parameter,x){
+  alpha=parameter[1]
+  beta=parameter[2]
+  b=parameter[3]
+  lambda=parameter[4]
+
+  ((1-(1-(1+((1-(1+x^lambda)^(-1))/((1+x^lambda)^(-1)))^(-alpha))^(-beta))^2)^(b))
+
+}                                                                                                                                                      
+                                                                                                                                                       }                                                                                                                                                      }
+goodness.fit(pdf=GELLLoG_pdf,cdf= GELLLoG_cdf,mle=c( 1.4934e+02,    2.2881e+02   ,   4.6739e-01 ,2.5272e-02  ),data=air,method = "BFGS",domain = c(0,100),lim_inf = c(0,0,0,0),
+             lim_sup = c(100,100,100,100))
+
+
+
+
+###############################################################################
+
+ MOGBXII
+
+
+   MOGBXII_pdf<-function(parameter,x){
+ alpha=parameter[1]
+  beta=parameter[2]
+   delta=parameter[3]
+  a=parameter[4]
+
+
+ alpha*beta*delta*a*(x^(alpha-1))*((1+x^alpha)^(-a*beta-1))*((1-(1-delta)*( (1+x^alpha)^(-(a*beta))))^(-2))
+ 
+  
+}
+# define MOGBXII  cdf
+    MOGBXII_cdf<-function(parameter,x){
+alpha=parameter[1]
+  beta=parameter[2]
+  delta=parameter[3]
+  a=parameter[4]
+
+
+(1- (1+x^alpha)^(-(a*beta)))/(1-(1-delta)*( (1+x^alpha)^(-(a*beta))))
+ 
+}
+goodness.fit(pdf=   MOGBXII_pdf,cdf=     MOGBXII_cdf,mle=c( 3.4770e+00 ,   5.1920e+00  ,1.4168e+03,   3.2106e-01 ),data=air,method = "BFGS",domain = c(0,100),lim_inf = c(0,0,0,0),
+             lim_sup = c(100,100,100,100))
+
+
+#################################################################################
+
+
+
+# define APTLW pdf
+
+APTLW_pdf<-function(parameter,x){
+  theta=parameter[1]
+  alpha=parameter[2]
+  beta=parameter[3]
+  lambda=parameter[4]
+
+
+
+((2*beta*theta*lambda*(log(alpha)))/(alpha-1))*((1-exp(-2*lambda*x^beta))^(theta-1))*(exp(-2*lambda*x^beta))*(alpha^((1-exp(-2*lambda*x^beta))^theta))*(x^(beta-1))
+
+
+
+}
+# define GELLLoG  cdf
+APTLW_cdf<-function(parameter,x){
+  theta=parameter[1]
+  alpha=parameter[2]
+  beta=parameter[3]
+  lambda=parameter[4]
+
+
+((alpha^((1-exp(-2*lambda*x^beta))^theta))-1)/(alpha-1)
+
+}
+goodness.fit(pdf=APTLW_pdf,cdf= APTLW_cdf,mle=c( 5.0092e+01,    8.9887e+02  ,  8.9880e-01 ,  9.9998e-01 ),data=air,method = "BFGS",domain = c(0,100),lim_inf = c(0,0,0,0),
+             lim_sup = c(100,100,100,100))
+
+
+TIIGIE-Lx
+# define GELLLoG pdf
+GELLLoG_pdf<-function(parameter,x){
+  lambda=parameter[1]
+  alpha=parameter[2]
+  a=parameter[3]
+  b=parameter[4]
+lambda*alpha*(a/b)*((1+(x/b))^(-(a+1)))*((1+(x/b))^(a*(alpha+1)))*exp(lambda*(1-(1+(x/b))^(a*alpha)))
+
+
+}
+# define GELLLoG  cdf
+GELLLoG_cdf<-function(parameter,x){
+ lambda=parameter[1]
+  alpha=parameter[2]
+  a=parameter[3]
+  b=parameter[4]
+1-exp(lambda*(1-(1+(x/b))^(a*alpha)))
+
+}
+goodness.fit(pdf=GELLLoG_pdf,cdf= GELLLoG_cdf,mle=c( 4.0715e-03 ,    6.4268e+01 ,      4.2065e-01 ,      1.7670e+01 ),data=air,method = "BFGS",domain = c(0,100),lim_inf = c(0,0,0,0),
+             lim_sup = c(100,100,100,100))
+
+
