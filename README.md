@@ -1,6 +1,4 @@
-# HT-TLTIIEHL-LLoG
-R codes for analysis
-This repository contains r codes for the analysis of HT-TLTIIEHL-LLog disstribution including 
+# HT-TLTIIEHL-LLoG 
 ###contents
 -simulation for estimation methods
 -simulation for numerical studies
