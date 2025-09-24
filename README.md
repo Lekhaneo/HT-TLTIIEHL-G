@@ -4,5 +4,4 @@ This repository contains r codes for the analysis of HT-TLTIIEHL-LLog disstribut
 ###contents
 -simulation for estimation methods
 -simulation for numerical studies
--plots of the desity (histogram), profile plots, observed probability plots, hazard rate fucntion, kaplaein meier  plot, ECDF plot, total time on test plot
 -line graphs for RMSE from simulation of estimation methods
